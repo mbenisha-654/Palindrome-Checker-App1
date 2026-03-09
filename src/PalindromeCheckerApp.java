@@ -1,14 +1,8 @@
 import java.util.*;
+public class PalindromeCheckerApp {
 
-// Strategy Interface
-interface PalindromeStrategy {
-    boolean isPalindrome(String str);
-}
-
-// Stack Strategy
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean isPalindrome(String str) {
+    // Stack method
+    public static boolean stackPalindrome(String str) {
 
         Stack<Character> stack = new Stack<>();
 
@@ -24,59 +18,33 @@ class StackStrategy implements PalindromeStrategy {
 
         return true;
     }
-}
 
-// Deque Strategy
-class DequeStrategy implements PalindromeStrategy {
+    // Reverse string method
+    public static boolean reversePalindrome(String str) {
 
-    public boolean isPalindrome(String str) {
-
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (char c : str.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
-        }
-
-        return true;
+        String reversed = new StringBuilder(str).reverse().toString();
+        return str.equals(reversed);
     }
-}
-
-// Context Class
-class PalindromeChecker {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeChecker(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean check(String str) {
-        return strategy.isPalindrome(str);
-    }
-}
-
-public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String input = "level";
+        String input = "racecar";
 
-        // Choose Strategy at runtime
-        PalindromeStrategy strategy = new StackStrategy();
-        //PalindromeStrategy strategy = new DequeStrategy();
+        // Stack timing
+        long start1 = System.nanoTime();
+        boolean result1 = stackPalindrome(input);
+        long end1 = System.nanoTime();
 
-        PalindromeChecker checker = new PalindromeChecker(strategy);
+        // Reverse timing
+        long start2 = System.nanoTime();
+        boolean result2 = reversePalindrome(input);
+        long end2 = System.nanoTime();
 
-        if (checker.check(input)) {
-            System.out.println(input + " is a Palindrome");
-        } else {
-            System.out.println(input + " is NOT a Palindrome");
-        }
+        System.out.println("Input String: " + input);
+        System.out.println("Stack Method Result: " + result1);
+        System.out.println("Stack Execution Time: " + (end1 - start1) + " ns");
+
+        System.out.println("Reverse Method Result: " + result2);
+        System.out.println("Reverse Execution Time: " + (end2 - start2) + " ns");
     }
 }
